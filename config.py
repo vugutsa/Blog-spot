@@ -5,7 +5,7 @@ class Config:
     '''
     General configuration parent class
     '''
-    # QUOTE_API_BASE_URL ='http://quotes.stormconsultancy.co.uk/random.json'
+    QUOTE_API_BASE_URL ='http://quotes.stormconsultancy.co.uk/random.json'
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://moringa:Access@localhost/blog'
     UPLOADED_PHOTOS_DEST ='app/static/photos'
     SQLALCHEMY_TRACK_MODIFICATIONS = False    
