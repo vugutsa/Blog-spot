@@ -1,10 +1,11 @@
 {% extends 'base.html'%}
-{% block content %} -->
+{% block content %} 
+<div class="jumbotron">
 <div class="container">
 <div class="row"> 
 <!-- displaying  Username-->
-  <div class="col-md-4">
-    <h3> {{user.username| capitalize}} </h3> 
+  <div class="col-md-4" style="text-align: center; font-size: 25px;">
+    <h3> {{user.username| capitalize}}</h3> 
     <!--Displaying user bio-->
     {% if user.bio %}
       <p> {{user.bio}}</p>
@@ -13,8 +14,7 @@
     {% endif %}
   </div>
 </div>
-</div>
-<div class="col-md-4">
+<div class="col-md-4" style="text-align: center; font-size: 25px; background-color: aqua;">
     {% if user.profile_pic_path %}
     <img src="{{url_for('static',filename=user.profile_pic_path)}}" alt="" class="img-thumbnail">
     {%else%}
@@ -26,6 +26,8 @@
       <input type="submit">
     </form>
       {% endif %}
+    </div>
+    </div>
   </div>
 {% endblock %}
 {% if user == current_user %}

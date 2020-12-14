@@ -64,6 +64,22 @@ def update_pic(uname):
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
 
+
+@main.route('/writer/<uname>/update/pic',methods= ['POST'])
+@login_required
+def update_pic_writer(uname):
+    
+    quote = get_quote()
+    writer = Writer.query.filter_by(username = uname).first()
+    if 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path = f'photos/{filename}'
+        writer.profile_pic_path = path
+        db.session.commit()
+    return redirect(url_for('main.profile',uname=uname))
+
+
+
 @main.route('/blog/comment/new/<int:id>', methods = ['GET','POST'])
 @login_required
 def new_comment(id):
@@ -79,9 +95,34 @@ def new_comment(id):
         # save comment method
         new_comment.save_comment()
         return redirect(url_for('.blog',id = blog.id ))
+         
+        new_comment.save_comment()
 
     title = f'{blog.title} comment'
     return render_template('new_comment.html',title = title, comment_form=form, blog=blog)
+
+
+@main.route('/idea/new_idea', methods = ['GET','POST'])
+@login_required
+def new_idea():
+    quote = get_quote()
+
+    form = IdeaForm()
+
+    if form.validate_on_submit():
+        idea= form.description.data
+        title=form.idea_title.data
+
+        # Updated idea instance
+        new_idea = Idea(idea_title=title,description= idea,user_id=current_user.id)
+
+        title='New idea'
+
+        new_idea.save_idea()
+
+        return redirect(url_for('main.new_idea'))
+
+    return render_template('idea.html',form= form, quote=quote)
 
 @main.route('/categories/<cate>')
 def category(cate):
@@ -94,6 +135,16 @@ def category(cate):
     # print(category)
     title = f'{cate}'
     return render_template('categories.html',title = title, category = category)
+
+
+@main.route('/ideas/all', methods=['GET', 'POST'])
+@login_required
+def all():
+    ideas = Idea.query.all()
+    quote = get_quote()
+    
+    return render_template('ideas.html', ideas=ideas, quote=quote)
+
 
 @main.route('/blog/', methods = ['GET','POST'])
 @login_required

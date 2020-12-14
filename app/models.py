@@ -18,7 +18,7 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     password_secure = db.Column(db.String(255))
-    pitch = db.relationship('Comments', backref='author', lazy='dynamic')
+    idea = db.relationship('Comments', backref='author', lazy='dynamic')
     
     def __repr__(self):
         return f'User {self.username}'
@@ -41,7 +41,32 @@ class User(UserMixin,db.Model):
 
 
 
+class Writer(UserMixin,db.Model):
+    __tablename__ = 'writers'
 
+    id = db.Column(db.Integer,primary_key = True)
+    writer_name = db.Column(db.String(255),index = True)
+    writer_email = db.Column(db.String(255),unique = True,index = True)
+    role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
+    bio = db.Column(db.String(255))
+    profile_pic_path = db.Column(db.String())
+    writer_pass_secure = db.Column(db.String(255))
+    
+    @property
+    def password(self):
+        raise AttributeError('You cannot read the password attribute')
+
+    @password.setter
+    def password(self, password):
+        self.writer_pass_secure = generate_password_hash(password)
+
+
+    def verify_password(self,password):
+        return check_password_hash(self.writer_pass_secure,password)
+    
+    def __repr__(self):
+        return f'User {self.username}'
+    
 
 
 class Role(db.Model):
@@ -59,10 +84,9 @@ class Comments(db.Model):
     __tablename__ = 'comments'
 
     id = db.Column(db.Integer,primary_key = True)
-    blog_id = db.Column(db.Integer, db.ForeignKey("blog.id"))
-    pitch_title = db.Column(db.String)
+    comment_id = db.Column(db.Integer, db.ForeignKey("idea.id"))
     image_path = db.Column(db.String)
-    pitch_comment = db.Column(db.String)
+    idea_comment = db.Column(db.String)
     posted = db.Column(db.DateTime,default=datetime.utcnow)
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     
@@ -76,9 +100,15 @@ class Comments(db.Model):
         
         return comments
     
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        
+    def __repr__(self):
+        return f'Comments: {self.comment}'
     
-class Blog(db.Model):
-    __tablename__= 'blog'
+class Idea(db.Model):
+    __tablename__= 'idea'
     id = db.Column(db.Integer,primary_key = True)
     title = db.Column(db.String(255))
     category = db.Column(db.String(255))
@@ -92,9 +122,9 @@ class Blog(db.Model):
         db.session.commit()
 
     @classmethod
-    def get_blog(cls,cate):
-        pitch = blog.query.filter_by(category=cate).all()
-        return pitch
+    def get_idea(cls,cate):
+        pitch = idea.query.filter_by(category=cate).all()
+        return idea
 
     def __repr__(self):
-        return f"blog {self.blog}','{self.date}')"
+        return f"idea {self.idea}','{self.date}')"

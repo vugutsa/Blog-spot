@@ -10,13 +10,13 @@ class CommentForm(FlaskForm):
     
     title = StringField('Comment title',validators=[Required()])
 
-    comment = TextAreaField('pitch comment')
+    comment = TextAreaField('blog comment')
 
     submit = SubmitField('Submit')
  
-class PitchForm(FlaskForm):
-    title = StringField('Pitch Title')
-    category = SelectField(u'Pitch Categories', choices=[('Inspirational', 'Inspirational'),('Work', 'Work'), ('Love', 'Love'),('Hustle', 'Hustle')])
-    pitch = TextAreaField('Pitch')
+class BlogForm(FlaskForm):
+    title = StringField('Blog Title')
+    category = SelectField(u'Blog Categories', choices=[('Inspirational', 'Inspirational'),('Work', 'Work'), ('Love', 'Love'),('Hustle', 'Hustle')])
+    pitch = TextAreaField('Blog')
     submit = SubmitField('Submit')
  

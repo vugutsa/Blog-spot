@@ -18,8 +18,9 @@
     {% block styles%}
           {{ super() }}
     <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two&display=swap" rel="stylesheet"
     {% endblock %}
-    <!-- Content block -->
+    <-- Content block -->
     {% block content %}
     <body>
         <div class="jumbotron">
@@ -33,12 +34,12 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title">
-                                <h2>Quote of the day..</h2>
+                                <h2 style="color: beige;">Quote of the day..</h2>
                             </div>
                         </div>
                         <div class="card-body">
-                            <h2 class="quoted-author">{{ quote.author }}</h2>
-                            <p class="quoted-quote">{{ quote.quote }}</p>
+                            <h2 class="quoted-author" style="color: beige;">{{ quote.author }}</h2>
+                            <p class="quoted-quote" style="color: beige;">{{ quote.quote }}</p>
                         </div>
                     </div>
                 </div>
@@ -46,7 +47,7 @@
             <div class="card" style="text-align: center;">
                 <div class="card-body">
                   <h5 class="card-title" style="font-style: italic; font-size: 25px;">Blogs</h5>
-                  <p class="card-text" style="font-size: 30px;">Welcome to Mercy Vugutsa's blog post whereby one can be able to comment on the 
+                  <p class="card-text" style="font-size: 30px; color: beige;">Welcome to Mercy Vugutsa's blog post whereby one can be able to comment on the 
                       blog,view the blog and also sign in to the blog.
                   </p>
                 </div>
