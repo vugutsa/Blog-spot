@@ -12,12 +12,12 @@ login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 
 
-bootstrap = Bootstrap()
+# bootstrap = Bootstrap()
 
-db = SQLAlchemy()
-photos = UploadSet('photos',IMAGES)
-mail = Mail()
-simple = SimpleMDE()
+# db = SQLAlchemy()
+# photos = UploadSet('photos',IMAGES)
+# mail = Mail()
+# simple = SimpleMDE()
 
 def create_app(config_name):
     app = Flask(__name__)
