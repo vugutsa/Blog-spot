@@ -1,0 +1,5 @@
+.jumbotron > h1{
+    text-align: center;
+    background-color: green;
+    font-style: italic;
+}
