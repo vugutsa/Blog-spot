@@ -16,7 +16,8 @@ class CommentForm(FlaskForm):
  
 class BlogForm(FlaskForm):
     title = StringField('Blog Title')
-    category = SelectField(u'Blog Categories', choices=[('Inspirational', 'Inspirational'),('Work', 'Work'), ('Love', 'Love'),('Hustle', 'Hustle')])
-    pitch = TextAreaField('Blog')
+    description = TextAreaField('Blog')
     submit = SubmitField('Submit')
+    
+    
  

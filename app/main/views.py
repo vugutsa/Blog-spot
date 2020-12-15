@@ -79,27 +79,16 @@ def update_pic_writer(uname):
     return redirect(url_for('main.profile',uname=uname))
 
 
-
-@main.route('/blog/comment/new/<int:id>', methods = ['GET','POST'])
+@main.route('/comments/<id>')
 @login_required
-def new_comment(id):
-    form = CommentForm()
-    blog= get_blog(id)
-    if form.validate_on_submit():
-        title = form.title.data
-        comment = form.comment.data
-
-        # Updated comment instance
-        new_comment = Comment(blog_id=blog.id,blog_title=title,image_path=blog.poster,blog_comment=comment,user=current_user)
-
-        # save comment method
-        new_comment.save_comment()
-        return redirect(url_for('.blog',id = blog.id ))
-         
-        new_comment.save_comment()
-
-    title = f'{blog.title} comment'
-    return render_template('new_comment.html',title = title, comment_form=form, blog=blog)
+def comment(id):
+    '''
+    function to return the comments
+    '''
+    quote = get_quote()
+    comm =Comments.get_comment(id)
+    title = 'comments'
+    return render_template('comments.html',comments = comm,title = title,quote=quote)
 
 
 @main.route('/idea/new_idea', methods = ['GET','POST'])
@@ -107,14 +96,14 @@ def new_comment(id):
 def new_idea():
     quote = get_quote()
 
-    form = IdeaForm()
+    form = BlogForm()
 
     if form.validate_on_submit():
         idea= form.description.data
-        title=form.idea_title.data
+        title=form.title.data
 
         # Updated idea instance
-        new_idea = Idea(idea_title=title,description= idea,user_id=current_user.id)
+        new_idea = Idea(title=title,description= idea,user_id=current_user.id)
 
         title='New idea'
 
@@ -124,20 +113,7 @@ def new_idea():
 
     return render_template('idea.html',form= form, quote=quote)
 
-@main.route('/categories/<cate>')
-def category(cate):
-    '''
-    function to return the blog by category
-    '''
-    category = blog.get_blog(cate)
-    
-    
-    # print(category)
-    title = f'{cate}'
-    return render_template('categories.html',title = title, category = category)
-
-
-@main.route('/ideas/all', methods=['GET', 'POST'])
+@main.route('/idea/all', methods=['GET', 'POST'])
 @login_required
 def all():
     ideas = Idea.query.all()
@@ -146,34 +122,21 @@ def all():
     return render_template('ideas.html', ideas=ideas, quote=quote)
 
 
-@main.route('/blog/', methods = ['GET','POST'])
-@login_required
-def new_blog():
 
-    form = blogForm()
+@main.route('/new_comment/<int:idea_id>', methods = ['GET','POST'])
+@login_required
+def new_comment(idea_id):
+    quote = get_quote()
+    opinion = Idea.query.filter_by(id = idea_id).first()
+    form = CommentForm()
 
     if form.validate_on_submit():
-        category = form.category.data
-        blog= form.blog.data
-        title=form.title.data
+        comment = form.comment.data
 
-        # Updated bloginstance
-        new_blog = blog(title=title,category= category,blog= blog,user_id=current_user.id)
+        new_comment = Comments(comment=comment,user_id=current_user.id, idea_id=idea_id)
 
-        title='Write a new blog'
-
-        new_blog.save_blog()
+        new_comment.save_comment()
 
         return redirect(url_for('main.index'))
-
-    return render_template('blog.html',form= form)
-
-
-
-@main.route('/comment/<int:id>')
-def single_comment(id):
-    comment=Comment.query.get(id)
-    if comment is None:
-        abort(404)
-    format_comment = markdown2.markdown(comment.blog_comment,extras=["code-friendly", "fenced-code-blocks"])
-    return render_template('comment.html',comment = comment,format_comment=format_comment)
+    title='New comment'
+    return render_template('new_comment.html',title=title,comment_form = form,idea_id=idea_id,quote=quote)

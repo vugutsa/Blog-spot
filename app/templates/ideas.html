@@ -22,18 +22,18 @@
             </div>
         </div>
         <div class="col-md-8">
-            {% for opinion in opinions %}
+            {% for idea in ideas %}
             <div class="body-content mt-3">
-                <h4 class="opinion-title">{{opinion.opinion_title}}</h4>
-                <h5 class="subtitle"> {{opinion.description}}</h5>
+                <h4 class="idea-title">{{idea.idea_title}}</h4>
+                <h5 class="subtitle"> {{idea.description}}</h5>
 
-                <h6 class="opinion-name">Posted by ~ {{opinion.username}}</h6>
-                <img src="{{ opinion.username.profile_pic_path }}" alt="">
-                <p class="date text-muted">Posted on ~ {{opinion.date.strftime('%Y-%m-%d')}}</p>
+                <h6 class="idea-name">Posted by ~</h6>
+                <img src="{{ idea.profile_pic_path }}" alt="">
+                <p class="text-muted">Posted on ~ {{idea.date.strftime('%Y-%m-%d')}}</p>
                 
                 <button type="button" class="btn btn-outline-success btn-sm"><a
-                        href="/new_comment/{{opinion.id}}">Comment</a></button>
-                <button type="button" class="btn btn-outline-success btn-sm"><a href="/comments/{{opinion.id}}">View
+                        href="/new_comment/{{idea.id}}">Comment</a></button>
+                <button type="button" class="btn btn-outline-success btn-sm"><a href="/comments/{{idea.id}}">View
                         comments</a></button>
                         <hr>
                         <hr>
